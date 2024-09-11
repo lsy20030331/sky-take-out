@@ -63,7 +63,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.info("开始设置静态资源映射...");
+        log.info("开始设置静态资源映射...");  // 如果没有设置静态资源映射的话那么spring会认为你在发出动态请求(Controller)而不是静态页面
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }

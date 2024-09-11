@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
+// DTO是传输进来的数据
 @Data
 @ApiModel(description = "员工登录时传递的数据模型")
 public class EmployeeLoginDTO implements Serializable {

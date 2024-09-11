@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+// VO的数据是用来返回给前端的
+
 @Data
 @Builder
 @NoArgsConstructor
