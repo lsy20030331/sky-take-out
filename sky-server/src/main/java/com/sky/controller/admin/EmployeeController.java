@@ -51,14 +51,14 @@ public class EmployeeController {
                 jwtProperties.getAdminTtl(),
                 claims);
 
-        EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
+        EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()  // 构建器模式来创建实例注意要在类上加上@Builder注解
                 .id(employee.getId())
                 .userName(employee.getUsername())
                 .name(employee.getName())
                 .token(token)
                 .build();
 
-        return Result.success(employeeLoginVO);
+        return Result.success(employeeLoginVO);  // 将此对象封装到Result中
     }
 
     /**
