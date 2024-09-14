@@ -107,4 +107,19 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 修改员工状态的操作
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("修改员工状态操作")
+                                                                       // id是通过地址栏传参所以不需要加注解就能获取到`
+    public Result startOrStop(@PathVariable Integer status, Long id){  // 路径参数需要加@PathVariable这个注解以来获取前端传递过来的参数
+        log.info("修改员工状态的操作: {} {}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
 }

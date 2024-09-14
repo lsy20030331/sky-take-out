@@ -116,4 +116,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total,records);  // 构造一个PageResult的对象并赋值
     }
 
+    /**
+     * 修改员工的操作
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // 此处使用update不只是针对于修改员工的状态，修改员工的状态的同时修改员工的信息
+        // 使用构建器
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+
+        employeeMapper.update(employee);
+    }
 }
