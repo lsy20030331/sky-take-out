@@ -48,4 +48,6 @@ public interface EmployeeService {
      * @param employeeDTO
      */
     void upDate(EmployeeDTO employeeDTO);
+
+    void deleteById(Long id);
 }

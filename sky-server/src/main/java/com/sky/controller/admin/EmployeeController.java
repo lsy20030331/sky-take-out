@@ -148,4 +148,13 @@ public class EmployeeController {
         return Result.success();
     }
 
+
+    @DeleteMapping("/id")
+    @ApiOperation("根据id删除员工")
+    public Result deleteById(@PathVariable Long id){
+        log.info("根据员工id删除员工 id: {}", id);
+        employeeService.deleteById(id);
+        return Result.success();
+    }
+
 }
