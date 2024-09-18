@@ -123,13 +123,37 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void startOrStop(Integer status, Long id) {
-        // 此处使用update不只是针对于修改员工的状态，修改员工的状态的同时修改员工的信息
         // 使用构建器
         Employee employee = Employee.builder()
                 .status(status)
                 .id(id)
                 .build();
 
+        employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id调查员工
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getByid(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("****");  // 传给前端用****表示
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     */
+    @Override
+    public void upDate(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee); // 因为update方法传入的是employee对象但此时传入的是DTO对象所以要将DTO中的数据拷贝到employee中
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 }
