@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishFlavorMapper">
+
+    <insert id="insertBatch">
+        insert into sky_take_out.dish_flavor(dish_id, name, value)
+        values
+            <foreach collection="list" item="df" separator=","> # collection表示需要遍历的对象 item用来获取集合的值 separator表示遍历的语句用,分割来获取元素
+            (#{df.dishId},#{df.name},#{df.value}) # dishId并不能直接获取到 详细见DishServieImp
+            </foreach>
+    </insert>
+</mapper>

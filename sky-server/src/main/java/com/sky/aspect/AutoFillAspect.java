@@ -42,14 +42,15 @@ public class AutoFillAspect {
         if (args == null || args.length == 0){
             return;
         }
-        Object object = args[0];  // 因为update只有一个参数所以args[0]就是Employee类 参数较多是约定在第一位即可
+        Object object = args[0];  // 因为update只有一个参数所以args[0]就是Employee类 参数较多时约定在第一位即可
         // 准备赋值数据
         LocalDateTime now = LocalDateTime.now();
         Long currentId = BaseContext.getCurrentId();
-        // 根据当前不同的操作类型，通过反射来赋值
 
+        // 根据当前不同的操作类型，通过反射来赋值
         if(operationType == OperationType.INSERT){  // 如果是插入操作
             try {
+                // 先用getClass获取类再用getDeclaredMethod来获取类的方法
                 Method setCreateTime = object.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);
                 Method setCreateuser = object.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
                 Method setUpdateTime = object.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class);
