@@ -10,4 +10,10 @@
             (#{df.dishId},#{df.name},#{df.value}) # dishId并不能直接获取到 详细见DishServieImp
             </foreach>
     </insert>
+    <delete id="deleteByDishId">
+        delete from sky_take_out.dish_flavor where dish_id in
+        <foreach collection="list" item="dishId" separator="," open="(" close=")">
+            #{dishId}
+        </foreach>
+    </delete>
 </mapper>

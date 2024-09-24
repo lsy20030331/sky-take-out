@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.UserMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">  # 设置useGeneratedKeys为true，返回数据库自动生成的记录主键id keyProperty = "id"则是将生成的id自动赋给Dish类中的id对象
+        insert into sky_take_out.user(openid, name, phone, sex, id_number, avatar, create_time)
+        values (#{openid}, #{name}, #{phone}, #{sex}, #{idNumber}, #{avatar} ,#{createTime})
+    </insert>
+
+
+</mapper>
