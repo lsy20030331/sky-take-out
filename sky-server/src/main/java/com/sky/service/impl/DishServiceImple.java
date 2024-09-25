@@ -1,6 +1,5 @@
 package com.sky.service.impl;
 
-import com.github.pagehelper.Constant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -13,9 +12,9 @@ import com.sky.exception.DeletionNotAllowedException;
 
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
-import com.sky.mapper.SetMealDishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
-import com.sky.service.DisService;
+import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +26,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class DishServiceImple implements DisService {
+public class DishServiceImple implements DishService {
 
     @Autowired
     private DishMapper dishMapper;
@@ -36,7 +35,7 @@ public class DishServiceImple implements DisService {
     private DishFlavorMapper dishFlavorMapper;
 
     @Autowired
-    private SetMealDishMapper setMealDishMapper;
+    private SetmealDishMapper setMealDishMapper;
     /**
      * 新增菜品和对应的口味
      * @param dishDTO
@@ -140,6 +139,23 @@ public class DishServiceImple implements DisService {
             //向口味表插入n条数据
             dishFlavorMapper.insertBatch(flavors);
         }
+
+    }
+
+    /**
+     * 菜品的分类查询
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> getBycategory(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        List<Dish> dishes = dishMapper.getBycategory(dish);
+
+        return dishes;
     }
 
 }

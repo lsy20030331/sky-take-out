@@ -2,9 +2,10 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
-import com.sky.service.DisService;
+import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,7 @@ import java.util.List;
 public class DishController {
 
     @Autowired
-    private DisService disService;
+    private DishService dishService;
 
     /**
      * 新增菜品操作
@@ -35,7 +36,7 @@ public class DishController {
     @ApiOperation("新增菜品相关接口")
     public Result save(@RequestBody DishDTO dishDTO){
         log.info("新增菜品: {}", dishDTO);
-        disService.saveWhithFlavor(dishDTO);
+        dishService.saveWhithFlavor(dishDTO);
         return Result.success();
     }
 
@@ -48,7 +49,7 @@ public class DishController {
     @ApiOperation("菜品分页查询相关接口")
     public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO){
         log.info("菜品分页查询{}", dishPageQueryDTO);
-        PageResult pageResult = disService.pageQuery(dishPageQueryDTO);
+        PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -61,7 +62,7 @@ public class DishController {
     @ApiOperation("删除菜品")
     public Result delete(@RequestParam List<Long> ids){  // 使用SpringMVC将传入的ids字符串转化为Long类型的数组元素
         log.info("删除相关菜品操作 {}", ids);
-        disService.deleteBetch(ids);
+        dishService.deleteBetch(ids);
         return Result.success();
     }
 
@@ -74,15 +75,33 @@ public class DishController {
     @ApiOperation("根据id来查询菜品")
     public Result<DishVO> getById(@PathVariable Long id){
         log.info("根据id查询菜品: {}", id);
-        DishVO dishVO = disService.getByIdWithFlavor(id);
+        DishVO dishVO = dishService.getByIdWithFlavor(id);
         return Result.success(dishVO);
     }
 
+    /**
+     * 修改菜品
+     * @param dishDTO
+     * @return
+     */
     @PutMapping
     @ApiOperation("修改菜品操作")
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("修改菜品操作: {}", dishDTO);
-        disService.updateWithFlavor(dishDTO);
+        dishService.updateWithFlavor(dishDTO);
         return Result.success();
+    }
+
+    /**
+     * 根据分类调查菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据分类调查菜品")
+    public Result<List<Dish>> getBycategory(Long categoryId){
+        log.info("根据分类调查菜品");
+        List<Dish> dishes = dishService.getBycategory(categoryId);
+        return Result.success(dishes);
     }
 }
