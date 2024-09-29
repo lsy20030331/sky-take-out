@@ -11,9 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 菜品管理
@@ -27,6 +29,9 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * 新增菜品操作
      * @param dishDTO
@@ -35,6 +40,9 @@ public class DishController {
     @PostMapping
     @ApiOperation("新增菜品相关接口")
     public Result save(@RequestBody DishDTO dishDTO){
+        // 清理缓存数据
+        String key = "dish_" + dishDTO.getCategoryId();
+        cleanCache(key);
         log.info("新增菜品: {}", dishDTO);
         dishService.saveWhithFlavor(dishDTO);
         return Result.success();
@@ -61,6 +69,10 @@ public class DishController {
     @DeleteMapping
     @ApiOperation("删除菜品")
     public Result delete(@RequestParam List<Long> ids){  // 使用SpringMVC将传入的ids字符串转化为Long类型的数组元素
+
+        // 将所有的菜品缓存数据清理 以dish_开头
+        cleanCache("dish_*");
+
         log.info("删除相关菜品操作 {}", ids);
         dishService.deleteBetch(ids);
         return Result.success();
@@ -87,6 +99,10 @@ public class DishController {
     @PutMapping
     @ApiOperation("修改菜品操作")
     public Result update(@RequestBody DishDTO dishDTO){
+
+        // 将所有的菜品缓存数据清理 以dish_开头
+        cleanCache("dish_*");
+
         log.info("修改菜品操作: {}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
@@ -100,8 +116,28 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类调查菜品")
     public Result<List<Dish>> getBycategory(Long categoryId){
+
         log.info("根据分类调查菜品");
         List<Dish> dishes = dishService.getBycategory(categoryId);
         return Result.success(dishes);
+    }
+
+    /**
+     * 菜品起售和停售
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("菜品的起售和停售")
+    public Result setstatus(@PathVariable Integer status, Long id){
+        cleanCache("dish_*");
+        log.info("菜品的起售和停售");
+        dishService.setstatus(status, id);
+        return Result.success();
+    }
+    private void cleanCache(String pattern){
+        Set keys = redisTemplate.keys("dish_*");
+        redisTemplate.delete(keys);
     }
 }
