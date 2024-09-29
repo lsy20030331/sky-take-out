@@ -7,10 +7,10 @@ sky:
     username: root
     password: 123456
   alioss:
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    access-key-id: LTAI5tL2kU6rmmvNbiwrod9P
-    access-key-secret: vMF4o8xO64Djjqh73jHvGwbPwau7cP
-    bucket-name: lsy66
+    endpoint: *
+    access-key-id: *
+    access-key-secret: *
+    bucket-name: *
   redis:
     host: localhost
     port: 6379
