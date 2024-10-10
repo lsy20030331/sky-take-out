@@ -76,4 +76,12 @@ public interface DishMapper {
     @AutoFill(OperationType.INSERT)
     @Update("update dish set status = #{status} where id = #{id}")
     void setstatus(Integer status, Long id);
+
+    /**
+     * 根据状态调查菜品
+     * @param status
+     * @return
+     */
+    @Select("select count(id) from dish where status = #{status}")
+    Integer countByStatus(int status);
 }
