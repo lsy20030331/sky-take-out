@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
         String openid = getOpenId(userLoginDTO.getCode());
 
+
         // 判断openid是否为空，如果为空那么登录失败抛出业务异常
         if(openid == null){
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);

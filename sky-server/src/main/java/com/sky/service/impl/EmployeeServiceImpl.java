@@ -104,14 +104,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-
-        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());  // 第一个参数表示第几页第二个参数表示每页多少条数据
+        // 第一个参数表示第几页第二个参数表示每页多少条数据
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
         // 看似Page类没有任何关联并且能够将所调查的页数和每页数据的量都能够传给mapper
         // 原因是pageQuery中调用了ThreadLocal将数据存进了线程的存储空间中所以可以直接调用
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);  // PageHelper插件的规范就是Page表中的泛型为所查询某某的类
-
+        // 获取得到的条数总数
         long total = page.getTotal();
+        // 获取得到员工信息的结果
         List<Employee> records = page.getResult();
         return new PageResult(total,records);  // 构造一个PageResult的对象并赋值
     }
